@@ -1,3 +1,4 @@
+
 import pandas as pd
 
 # Read the Chipotle dataset
@@ -10,9 +11,14 @@ print(df.head())
 
 
 # b) Sort item_price in descending order
-# First remove $ and convert item_price to float
-df["item_price"] = df["item_price"].str.replace("$", "", regex=False)
-df["item_price"] = df["item_price"].astype(float)
+# Convert item_price to float
+# This works whether the CSV contains $ or not
+df["item_price"] = (
+    df["item_price"]
+    .astype(str)
+    .str.replace("$", "", regex=False)
+    .astype(float)
+)
 
 sorted_df = df.sort_values("item_price", ascending=False)
 
@@ -30,7 +36,7 @@ print(chicken)
 
 
 # d) Remove square brackets from choice_description
-df["choice_description"] = df["choice_description"].str.replace(
+df["choice_description"] = df["choice_description"].astype(str).str.replace(
     r"[\[\]]", "", regex=True
 )
 
@@ -43,11 +49,10 @@ print("\nData types of each column:")
 print(df.dtypes)
 
 
-# f) Replace $ and convert item_price to float
-# Already done above
-
+# f) Display item_price after removing $ and converting to float
 print("\nItem price after converting to float:")
 print(df["item_price"].head())
 
 print("\nDatatype of item_price:")
 print(df["item_price"].dtype)
+
